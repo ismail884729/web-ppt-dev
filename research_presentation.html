@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Healing Digital Twin Systems Research Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 60px;
+            display: none;
+            position: relative;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+        }
+
+        .slide h2 {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+        }
+
+        .slide h3 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #27ae60;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .author-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .opportunity-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #27ae60;
+        }
+
+        /* Fullscreen button styles */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(52, 152, 219, 0.7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .fullscreen-btn:hover {
+            opacity: 1;
+            background: rgba(52, 152, 219, 0.9);
+        }
+
+        /* Hide the button when in fullscreen */
+        :fullscreen .fullscreen-btn {
+            opacity: 0;
+        }
+
+        :fullscreen .fullscreen-btn:hover {
+            opacity: 0.5;
+        }
+
+        /* Additional fullscreen styles */
+        :fullscreen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        :fullscreen .presentation-container {
+            padding: 0;
+            margin: 0;
+        }
+
+        :fullscreen .slide {
+            max-width: 100%;
+            width: 100%;
+            height: 100vh;
+            border-radius: 0;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>Enhancing Electrical Asset Lifespan Through Self-Healing Digital Twin Systems</h1>
+            <div class="author-info">
+                <h3>ISMAIL MAKAME ALI</h3>
+                <p><strong>Registration:</strong> BCS/17/22/014/TZ</p>
+                <p><strong>Course:</strong> CS3223 - Advanced Topics in Computer Science</p>
+                <p><strong>Advisor:</strong> ABDULL RAHIM HAROUN ALI</p>
+                <p><strong>Date:</strong> June 17, 2025</p>
+            </div>
+            <div class="highlight">
+                <p style="text-align: center; font-size: 1.2em; margin: 0;">
+                    <strong>Transforming electrical infrastructure through intelligent, autonomous asset management systems</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Research Overview & Objectives -->
+        <div class="slide">
+            <h2>Research Overview & Objectives</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Research Focus</h3>
+                    <ul>
+                        <li>Examining self-healing digital twin systems for electrical assets</li>
+                        <li>Analyzing real-time monitoring and predictive maintenance capabilities</li>
+                        <li>Evaluating autonomous fault detection and correction</li>
+                        <li>Investigating AI-powered asset optimization strategies</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Key Objectives</h3>
+                    <ul>
+                        <li>Analyze current digital twin technology state</li>
+                        <li>Evaluate impact on asset lifespan extension</li>
+                        <li>Identify implementation challenges and solutions</li>
+                        <li>Examine successful case studies and applications</li>
+                        <li>Provide future research recommendations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight">
+                <p><strong>Core Question:</strong> How can self-healing digital twin systems revolutionize electrical asset management to extend equipment lifespan while optimizing operational efficiency?</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Current Market & Technology State -->
+        <div class="slide">
+            <h2>Current Market & Technology Landscape</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">30%</span>
+                    <span class="stat-label">Maintenance Cost Reduction</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">25%</span>
+                    <span class="stat-label">Asset Utilization Improvement</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2032</span>
+                    <span class="stat-label">Market Growth Projection</span>
+                </div>
+            </div>
+            
+            <h3>Technology Integration</h3>
+            <ul>
+                <li><strong>IoT Sensors & Edge Computing:</strong> Real-time data collection and local processing</li>
+                <li><strong>AI/ML Algorithms:</strong> Predictive analytics and autonomous decision-making</li>
+                <li><strong>Advanced Modeling:</strong> High-fidelity physics-based simulations</li>
+                <li><strong>Cloud Platforms:</strong> Scalable processing and storage infrastructure</li>
+            </ul>
+
+            <div class="highlight">
+                <p><strong>Market Reality:</strong> The electrical digital twin market is experiencing unprecedented growth, with major utilities reporting significant ROI from early implementations.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Key Technologies & Architecture -->
+        <div class="slide">
+            <h2>Self-Healing Digital Twin Architecture</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Core Technology Stack</h3>
+                    <ul>
+                        <li><strong>Sensor Layer:</strong> IoT devices with edge computing capabilities</li>
+                        <li><strong>Communication Layer:</strong> Secure, real-time data transmission</li>
+                        <li><strong>Analytics Layer:</strong> AI/ML for pattern recognition and prediction</li>
+                        <li><strong>Decision Layer:</strong> Autonomous fault detection and response</li>
+                        <li><strong>Interface Layer:</strong> Human-machine collaboration tools</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Self-Healing Capabilities</h3>
+                    <ul>
+                        <li>Autonomous fault isolation and system reconfiguration</li>
+                        <li>Predictive maintenance scheduling optimization</li>
+                        <li>Real-time performance monitoring and adjustment</li>
+                        <li>Automated emergency response protocols</li>
+                        <li>Continuous learning and model adaptation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Innovation Highlight:</strong> Modern systems integrate uncertainty quantification, providing probabilistic predictions rather than deterministic forecasts, significantly improving practical utility for maintenance planning.</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Industry Players & Implementations -->
+        <div class="slide">
+            <h2>Key Industry Players & Success Stories</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Technology Leaders</h3>
+                    <ul>
+                        <li><strong>General Electric:</strong> Industrial IoT platform for power generation assets</li>
+                        <li><strong>Siemens:</strong> Comprehensive analytics for electrical infrastructure</li>
+                        <li><strong>Cloud Providers:</strong> Scalable platforms with pre-built connectors</li>
+                        <li><strong>Specialized Vendors:</strong> Industry-specific digital twin solutions</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Research & Development</h3>
+                    <ul>
+                        <li><strong>National Laboratories:</strong> Autonomous grid recovery systems</li>
+                        <li><strong>Universities:</strong> Intelligent infrastructure research programs</li>
+                        <li><strong>Industry Organizations:</strong> Standardization and best practices</li>
+                        <li><strong>Utility Companies:</strong> Real-world deployment experience</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Real-World Impact:</strong> Early adopter utilities have demonstrated prevention of thousands of outages through autonomous fault detection and system reconfiguration, achieving measurable improvements in reliability and cost reduction.</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Implementation Challenges -->
+        <div class="slide">
+            <h2>Implementation Challenges & Barriers</h2>
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <h3>Technical Challenges</h3>
+                    <ul>
+                        <li>Data quality and integration complexity</li>
+                        <li>Legacy system compatibility</li>
+                        <li>Model validation and accuracy</li>
+                        <li>Interoperability between vendors</li>
+                    </ul>
+                </div>
+                <div class="challenge-card">
+                    <h3>Security Concerns</h3>
+                    <ul>
+                        <li>Cybersecurity vulnerabilities</li>
+                        <li>Data integrity protection</li>
+                        <li>Critical infrastructure security</li>
+                        <li>Attack surface expansion</li>
+                    </ul>
+                </div>
+                <div class="challenge-card">
+                    <h3>Organizational Barriers</h3>
+                    <ul>
+                        <li>High initial implementation costs</li>
+                        <li>Workforce training requirements</li>
+                        <li>Resistance to automation</li>
+                        <li>Regulatory compliance uncertainty</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Critical Gap:</strong> Lack of industry-wide standards creates significant barriers to widespread adoption, with different vendors developing proprietary approaches that limit interoperability and create vendor lock-in situations.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Research Gaps & Limitations -->
+        <div class="slide">
+            <h2>Research Gaps & Current Limitations</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Technical Gaps</h3>
+                    <ul>
+                        <li><strong>Standardization:</strong> Limited industry-wide standards for implementation</li>
+                        <li><strong>Validation Methods:</strong> Insufficient methodologies for model accuracy verification</li>
+                        <li><strong>Uncertainty Quantification:</strong> Limited research on confidence intervals for autonomous decisions</li>
+                        <li><strong>Interoperability:</strong> Lack of communication standards between different systems</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Socio-Technical Gaps</h3>
+                    <ul>
+                        <li><strong>Human Factors:</strong> Limited research on operator-system interaction</li>
+                        <li><strong>Workforce Development:</strong> Insufficient training methodologies for new skill sets</li>
+                        <li><strong>Regulatory Frameworks:</strong> Outdated regulations for autonomous systems</li>
+                        <li><strong>Ethical Considerations:</strong> Limited guidance on liability and accountability</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Research Priority:</strong> Future work must address human-system integration challenges, including development of effective interfaces for human-AI collaboration and frameworks for maintaining human expertise in automated environments.</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Opportunities & Future Applications -->
+        <div class="slide">
+            <h2>Opportunities & Future Directions</h2>
+            <div class="challenges-grid">
+                <div class="opportunity-card">
+                    <h3>Emerging Technologies</h3>
+                    <ul>
+                        <li>Quantum computing for optimization</li>
+                        <li>Advanced materials for sensing</li>
+                        <li>Federated learning approaches</li>
+                        <li>Blockchain for data integrity</li>
+                    </ul>
+                </div>
+                <div class="opportunity-card">
+                    <h3>Advanced Applications</h3>
+                    <ul>
+                        <li>Autonomous emergency response</li>
+                        <li>Renewable energy optimization</li>
+                        <li>Dynamic pricing strategies</li>
+                        <li>Disaster preparedness systems</li>
+                    </ul>
+                </div>
+                <div class="opportunity-card">
+                    <h3>Sector Integration</h3>
+                    <ul>
+                        <li>Manufacturing facility optimization</li>
+                        <li>Data center efficiency</li>
+                        <li>Hospital critical systems</li>
+                        <li>Smart city infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Transformative Potential:</strong> Quantum algorithms could enable real-time optimization of complex electrical networks with thousands of variables, revolutionizing generation dispatch, transmission planning, and maintenance scheduling.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Key Findings & Recommendations -->
+        <div class="slide">
+            <h2>Key Findings & Recommendations</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Critical Findings</h3>
+                    <ul>
+                        <li>Technology has reached sufficient maturity for critical infrastructure deployment</li>
+                        <li>Quantifiable benefits include 30% maintenance cost reduction and 25% asset utilization improvement</li>
+                        <li>Successful implementations require systematic approaches and stakeholder engagement</li>
+                        <li>Workforce development emerges as critical success factor</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Strategic Recommendations</h3>
+                    <ul>
+                        <li>Prioritize industry-wide standardization efforts</li>
+                        <li>Develop comprehensive training programs</li>
+                        <li>Establish regulatory frameworks for autonomous systems</li>
+                        <li>Foster international collaboration in research</li>
+                        <li>Implement phased deployment strategies</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">3-7</span>
+                    <span class="stat-label">Years Typical Payback Period</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1000s</span>
+                    <span class="stat-label">Outages Prevented</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Conclusion & Future Research -->
+        <div class="slide">
+            <h2>Conclusion & Future Research Directions</h2>
+            <div class="highlight">
+                <h3>Research Conclusion</h3>
+                <p>Self-healing digital twin systems represent a paradigm shift in electrical asset management, offering unprecedented opportunities for infrastructure optimization while ensuring reliable, sustainable power delivery in an increasingly complex energy landscape.</p>
+            </div>
+            
+            <h3>Future Research Priorities</h3>
+            <ul>
+                <li><strong>Standardization:</strong> Develop industry-wide interoperability frameworks</li>
+                <li><strong>AI Advancement:</strong> Improve predictive accuracy and autonomous decision-making</li>
+                <li><strong>Quantum Integration:</strong> Explore quantum computing applications for complex optimization</li>
+                <li><strong>Human-System Integration:</strong> Design effective human-AI collaboration interfaces</li>
+                <li><strong>Regulatory Development:</strong> Create frameworks for autonomous infrastructure management</li>
+            </ul>
+        </div>
+
+       <!-- Slide 11: Thank You -->
+<div class="slide">
+    <div style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+    ">
+        <h1 style="
+            font-size: 4em;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        ">
+            Thank You
+        </h1>
+        
+        <div style="margin: 40px auto; max-width: 600px;">
+            <h3 style="
+                color: #2c3e50;
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            ">
+                Questions & Discussion
+            </h3>
+            <p style="
+                font-size: 1.2em;
+                color: #7f8c8d;
+                margin-bottom: 30px;
+            ">
+                Your feedback and insights are valuable
+            </p>
+        </div>
+
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        ">
+            <h3 style="
+                color: white;
+                margin-bottom: 20px;
+                font-size: 1.4em;
+            ">
+                Contact Information
+            </h3>
+            <p style="color: white; margin-bottom: 10px; font-size: 1.2em;">
+                <strong>ISMAIL MAKAME ALI</strong>
+            </p>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 8px;">
+                Registration: BCS/17/22/014/TZ
+            </p>
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 8px;">
+                Advanced Topics in Computer Science
+            </p>
+            <p style="color: rgba(255,255,255,0.9);">
+                June 17, 2025
+            </p>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreenBtn">
+        Toggle Fullscreen
+    </button>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    // Hide all slides except the first one
+    function initSlides() {
+        slides.forEach((slide, index) => {
+            if (index === 0) {
+                slide.style.display = 'block';
+            } else {
+                slide.style.display = 'none';
+            }
+        });
+    }
+
+    // Handle slide navigation
+    function showSlide(index) {
+        // Hide current slide
+        slides[currentSlide].style.display = 'none';
+        
+        // Update current slide index
+        currentSlide = index;
+        
+        // Keep index within bounds
+        if (currentSlide >= slides.length) {
+            currentSlide = 0;
+        }
+        if (currentSlide < 0) {
+            currentSlide = slides.length - 1;
+        }
+        
+        // Show new current slide
+        slides[currentSlide].style.display = 'block';
+    }
+
+    // Handle keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        switch(event.key) {
+            case 'ArrowRight':
+            case 'Right':
+                showSlide(currentSlide + 1);
+                break;
+            case 'ArrowLeft':
+            case 'Left':
+                showSlide(currentSlide - 1);
+                break;
+            case 'ArrowUp':
+            case 'Up':
+                showSlide(currentSlide - 1);
+                break;
+            case 'ArrowDown':
+            case 'Down':
+                showSlide(currentSlide + 1);
+                break;
+            case 'f':
+            case 'F':
+                toggleFullScreen();
+                break;
+        }
+    });
+
+    // Handle touch events
+    document.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
+    document.addEventListener('touchend', function(e) {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        
+        // Determine if the swipe was horizontal or vertical
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // Horizontal swipe
+            if (Math.abs(deltaX) > 50) { // Minimum swipe distance
+                if (deltaX > 0) {
+                    // Swipe right
+                    showSlide(currentSlide - 1);
+                } else {
+                    // Swipe left
+                    showSlide(currentSlide + 1);
+                }
+            }
+        } else {
+            // Vertical swipe
+            if (Math.abs(deltaY) > 50) { // Minimum swipe distance
+                if (deltaY > 0) {
+                    // Swipe down
+                    showSlide(currentSlide + 1);
+                } else {
+                    // Swipe up
+                    showSlide(currentSlide - 1);
+                }
+            }
+        }
+    });
+
+    // Handle mouse wheel scroll
+    let wheelTimer = null;
+    document.addEventListener('wheel', function(e) {
+        // Clear any existing timer
+        if (wheelTimer !== null) {
+            clearTimeout(wheelTimer);
+        }
+
+        // Set a new timer
+        wheelTimer = setTimeout(function() {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                // Vertical scroll
+                if (e.deltaY > 0) {
+                    showSlide(currentSlide + 1);
+                } else {
+                    showSlide(currentSlide - 1);
+                }
+            } else {
+                // Horizontal scroll
+                if (e.deltaX > 0) {
+                    showSlide(currentSlide + 1);
+                } else {
+                    showSlide(currentSlide - 1);
+                }
+            }
+        }, 50); // Debounce time
+    }, { passive: true });
+
+    // Fullscreen handling
+    const presentationContainer = document.querySelector('.presentation-container');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            if (presentationContainer.requestFullscreen) {
+                presentationContainer.requestFullscreen();
+            } else if (presentationContainer.webkitRequestFullscreen) {
+                presentationContainer.webkitRequestFullscreen();
+            } else if (presentationContainer.msRequestFullscreen) {
+                presentationContainer.msRequestFullscreen();
+            }
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+
+    // Handle fullscreen button click
+    fullscreenBtn.addEventListener('click', toggleFullScreen);
+
+    // Handle fullscreen change
+    document.addEventListener('fullscreenchange', function() {
+        if (document.fullscreenElement) {
+            fullscreenBtn.textContent = 'Exit Fullscreen';
+        } else {
+            fullscreenBtn.textContent = 'Enter Fullscreen';
+        }
+    });
+
+    // Initialize slides
+    initSlides();
+});
+    </script>
+</body>
+</html>
